@@ -3,7 +3,7 @@
 
 const CACHE_NAME = 'forklift-v3.8';
 const STATIC_ASSETS = [
-  './forklift_v3.8.html',
+  './index.html',
   './manifest.json',
   './icon.svg',
   './icon-192.png',
@@ -90,7 +90,7 @@ self.addEventListener('fetch', event => {
       }).catch(() => {
         // Offline fallback — return the game HTML for navigation requests
         if (event.request.mode === 'navigate') {
-          return caches.match('./forklift_v3.8.html');
+          return caches.match('./index.html');
         }
       });
     })
