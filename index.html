@@ -3124,7 +3124,7 @@ const QUIPS = {
 
 // ── STATE ──────────────────────────────────────────────
 const S = {
-  screen:'browse', browseTab:'food', category:'food', search:'',
+  screen:'browse', browseTab:'stores', category:'food', search:'',
   selectedStoreId:null,
   cart:{ storeId:null, items:[] },
   tip:2, promo:null,
@@ -3555,6 +3555,7 @@ function getItemRarity(price){
 
 // Extract FA icon class from store.emoji HTML string
 function storeIconClass(emojiHtml){
+  if(!emojiHtml||typeof emojiHtml!=='string') return 'fa-utensils';
   const m = emojiHtml.match(/fa-solid\s+(fa-[\w-]+)/);
   return m ? m[1] : 'fa-utensils';
 }
@@ -5331,18 +5332,25 @@ function bottomBarHTML(){
 
 // ── MAIN RENDER ───────────────────────────────────
 function render(){
-  if(map&&S.screen!=='tracking'){map.remove();map=null;}
-  const c=byId('content'),bb=byId('bottomBar');
-  let html='';
-  if(S.screen==='browse')     { html=browseHTML(); checkFirstOrderHint(); }
-  else if(S.screen==='store')      html=storeHTML();
-  else if(S.screen==='cart')       html=cartHTML();
-  else if(S.screen==='confirm')    html=confirmHTML();
-  else if(S.screen==='tracking')   html=trackingHTML();
-  else if(S.screen==='delivered')  html=deliveredHTML();
-  c.innerHTML=html;
-  bb.innerHTML=bottomBarHTML();
-  hdr(); wireSearch(); 
+  try{
+    if(map&&S.screen!=='tracking'){map.remove();map=null;}
+    const c=byId('content'),bb=byId('bottomBar');
+    if(!c||!bb) return;
+    let html='';
+    if(S.screen==='browse')     { html=browseHTML(); checkFirstOrderHint(); }
+    else if(S.screen==='store')      html=storeHTML();
+    else if(S.screen==='cart')       html=cartHTML();
+    else if(S.screen==='confirm')    html=confirmHTML();
+    else if(S.screen==='tracking')   html=trackingHTML();
+    else if(S.screen==='delivered')  html=deliveredHTML();
+    c.innerHTML=html;
+    bb.innerHTML=bottomBarHTML();
+    hdr(); wireSearch();
+  }catch(e){
+    console.error('render() error:',e);
+    const c=byId('content');
+    if(c) c.innerHTML='<div style="padding:20px;color:#c0392b;font-size:13px"><b>Something went wrong</b><br><small>'+e.message+'</small><br><br><button onclick="location.reload()" style="padding:8px 16px;border-radius:8px;border:none;background:#E1442D;color:#fff;cursor:pointer">Reload</button></div>';
+  }
 }
 function refresh(){ render(); }
 function wireSearch(){
@@ -5359,7 +5367,7 @@ document.addEventListener('click',e=>{
   const t=e.target.closest('[data-action]'); if(!t) return;
   const a=t.dataset.action;
   if(a==='openCart')    { S.screen='cart'; render(); }
-  else if(a==='setCategory') { S.category=t.dataset.val; S.browseTab='stores'; S.search=''; render(); }
+  else if(a==='setCategory') { S.browseTab='stores'; S.category=t.dataset.val; S.browseTab='stores'; S.search=''; render(); }
   else if(a==='setEmpire')   { S.browseTab=S.browseTab==='empire'?'stores':'empire'; render(); }
   else if(a==='openStore'){
     const _os=findStore(t.dataset.id); if(!_os) return;
@@ -5392,7 +5400,7 @@ document.addEventListener('click',e=>{
     if(ord) showReceiptScreen(ord);
     else showToast('Receipt not available');
   }
-  else if(a==='goBrowse')    { S.screen='browse'; render(); }
+  else if(a==='goBrowse')    { S.screen='browse'; S.browseTab='stores'; render(); }
   else if(a==='goStore')     { S.screen=S.cart.storeId?'store':'browse'; if(S.cart.storeId) S.selectedStoreId=S.cart.storeId; render(); }
   else if(a==='addToCart')   { addToCart(t.dataset.store,t.dataset.item); }
   else if(a==='changeQty')   { changeQty(t.dataset.item,parseInt(t.dataset.delta)); }
@@ -5688,6 +5696,9 @@ function showTutorial(){
 }
 function closeTutorial(){
   byId('tutScreen').style.display='none';
+  PLAYER.tutorialSeen=true; savePlayer();
+  if(S.screen!=='browse'){ S.screen='browse'; S.browseTab='stores'; }
+  render(); hdr();
 }
 function renderTutStep(){
   const t=TUTORIAL_STEPS[tutStep];
