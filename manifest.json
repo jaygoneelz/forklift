@@ -2,7 +2,7 @@
   "name": "Forklift — Food Delivery Game",
   "short_name": "Forklift",
   "description": "The hunger is real. The food isn't. Browse 28 restaurants, manage your budget, level up, and never actually eat anything.",
-  "start_url": "./forklift_v3.8.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
