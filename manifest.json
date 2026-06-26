@@ -1,0 +1,59 @@
+{
+  "name": "Forklift — Food Delivery Game",
+  "short_name": "Forklift",
+  "description": "The hunger is real. The food isn't. Browse 28 restaurants, manage your budget, level up, and never actually eat anything.",
+  "start_url": "./forklift_v3.8.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F5EED8",
+  "theme_color": "#E1442D",
+  "lang": "en-GB",
+  "categories": ["games", "food"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-browse.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Browse restaurants"
+    },
+    {
+      "src": "screenshot-tracking.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Live delivery tracking"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Order food",
+      "short_name": "Order",
+      "description": "Jump straight to browsing",
+      "url": "./forklift_v3.8.html#browse",
+      "icons": [{"src": "icon-192.png", "sizes": "192x192"}]
+    }
+  ],
+  "prefer_related_applications": false
+}
